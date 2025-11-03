@@ -1,0 +1,7 @@
+marvin
+python-dotenv
+google-generativeai
+groq
+flask
+markdown
+schedule
