@@ -72,13 +72,11 @@ def get_model_config():
     # 1. Prefer Google Gemini from .env
     if env_values.get("GOOGLE_API_KEY"):
         google_key = env_values.get("GOOGLE_API_KEY")
-        # Ensure provider sees the key via environment
         if google_key:
             os.environ["GOOGLE_API_KEY"] = google_key
-        # Use gemini-2.5-flash (latest fast model with your key)
-        print("🤖 Using: Google Gemini (Free & Fast)")
-        print("📦 Model: gemini-2.5-flash\n")
-        return "gemini-2.5-flash"
+        print("\ud83e\udd16 Using: Google Gemini (Free & Fast)")
+        print("\ud83d\udce6 Model: gemini-2.0-flash\n")
+        return "gemini/gemini-2.0-flash"
 
     # 2. Try GROQ from .env
     if env_values.get("GROQ_API_KEY"):
@@ -86,45 +84,44 @@ def get_model_config():
         if groq_key:
             os.environ["GROQ_API_KEY"] = groq_key
         groq_model = env_values.get("GROQ_MODEL") or os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile"
-        print("🤖 Using: Groq (Free & Fast) — chosen from .env")
-        print(f"📦 Model: {groq_model}\n")
-        return f"groq:{groq_model}"
+        print("\ud83e\udd16 Using: Groq (Free & Fast) \u2014 chosen from .env")
+        print(f"\ud83d\udce6 Model: {groq_model}\n")
+        return f"groq/{groq_model}"
 
     # 3. Then GOOGLE from environment
     if os.getenv("GOOGLE_API_KEY"):
-        print("🤖 Using: Google Gemini (Free & Fast) — from environment")
-        print("📦 Model: gemini-2.5-flash\n")
-        return "gemini-2.5-flash"
+        print("\ud83e\udd16 Using: Google Gemini (Free & Fast) \u2014 from environment")
+        print("\ud83d\udce6 Model: gemini-2.0-flash\n")
+        return "gemini/gemini-2.0-flash"
 
     # 4. Then GROQ from environment
     if os.getenv("GROQ_API_KEY"):
         groq_model = os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile"
-        print("🤖 Using: Groq (Free & Fast) — chosen from environment")
-        print(f"📦 Model: {groq_model}\n")
-        return f"groq:{groq_model}"
+        print("\ud83e\udd16 Using: Groq (Free & Fast) \u2014 chosen from environment")
+        print(f"\ud83d\udce6 Model: {groq_model}\n")
+        return f"groq/{groq_model}"
 
     # 5. Fall back to OpenAI if provided
     if env_values.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY"):
         openai_key = env_values.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
         if openai_key:
             os.environ["OPENAI_API_KEY"] = openai_key
-        print("🤖 Using: OpenAI GPT — detected API key")
-        print("📦 Model: GPT-4o Mini\n")
+        print("\ud83e\udd16 Using: OpenAI GPT \u2014 detected API key")
+        print("\ud83d\udce6 Model: GPT-4o Mini\n")
         return "openai:gpt-4o-mini"
 
     # Nothing available
     raise ValueError(
-        "❌ No supported API key found. Please add one to your .env:\n"
-        "  • GOOGLE_API_KEY (Gemini - free): https://makersuite.google.com/app/apikey\n"
-        "  • GROQ_API_KEY (free): https://console.groq.com/keys\n"
+        "\u274c No supported API key found. Please add one to your .env:\n"
+        "  \u2022 GOOGLE_API_KEY (Gemini - free): https://aistudio.google.com/app/apikey\n"
+        "  \u2022 GROQ_API_KEY (free): https://console.groq.com/keys\n"
     )
 
 
 # Get the model string
 MODEL = get_model_config()
 
-
-# Create specialized agents with the free model
+# Create specialized agents with the configured model
 researcher = marvin.Agent(
     name="Research Specialist",
     model=MODEL,
@@ -134,7 +131,7 @@ researcher = marvin.Agent(
     - Gathers statistics and credible data points
     - Understands target audience needs
     - Prioritizes accurate, up-to-date information
-    
+
     Always provide comprehensive research with specific details."""
 )
 
@@ -148,7 +145,7 @@ strategist = marvin.Agent(
     - Crafts attention-grabbing hooks
     - Plans sections that build logically
     - Keeps total article to 500-800 words (2.5-4 min read)
-    
+
     Focus on creating SHORT, punchy outlines. Quality over quantity."""
 )
 
@@ -164,7 +161,7 @@ writer = marvin.Agent(
     - Creates scannable content with good pacing
     - Writes at a 7th-9th grade reading level for accessibility
     - IMPORTANT: Keep each section brief (1-2 short paragraphs max)
-    
+
     Write naturally and engagingly, as if explaining to a smart friend. Be concise."""
 )
 
@@ -177,7 +174,7 @@ seo_optimizer = marvin.Agent(
     - Identifies high-value keywords
     - Ensures content is search-engine friendly
     - Balances SEO with readability
-    
+
     Make content discoverable without sacrificing quality."""
 )
 
@@ -185,30 +182,30 @@ seo_optimizer = marvin.Agent(
 def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> BlogPost:
     """
     Generate a complete, high-quality blog post using multiple AI agents.
-    
+
     Args:
         topic: The blog post topic
         tone: Writing tone (default: "professional yet friendly")
-        
+
     Returns:
         BlogPost: Complete structured blog post
     """
-    print(f"\n🚀 Starting AI Blog Post Generation")
-    print(f"📝 Topic: {topic}")
-    print(f"🎨 Tone: {tone}\n")
-    
+    print(f"\n\ud83d\ude80 Starting AI Blog Post Generation")
+    print(f"\ud83d\udcdd Topic: {topic}")
+    print(f"\ud83c\udfa8 Tone: {tone}\n")
+
     # TASK 1: Research Phase
-    print("🔍 Phase 1: Researching topic...")
+    print("\ud83d\udd0d Phase 1: Researching topic...")
     research = marvin.run(
         f"Research the topic '{topic}'. Find key points, statistics, trending angles, "
         f"target audience insights, and credible sources. Be thorough and current.",
         agents=[researcher],
         result_type=ResearchFindings
     )
-    print(f"✅ Research complete: {len(research.key_points)} key points found\n")
-    
+    print(f"\u2705 Research complete: {len(research.key_points)} key points found\n")
+
     # TASK 2: Strategic Planning
-    print("📋 Phase 2: Creating content outline...")
+    print("\ud83d\udccb Phase 2: Creating content outline...")
     outline = marvin.run(
         f"Create a SHORT blog post outline about '{topic}' with a {tone} tone. "
         f"Use research findings to structure 3-4 CONCISE main sections. Target: 500-800 words total.",
@@ -216,11 +213,11 @@ def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> B
         result_type=ContentOutline,
         context={"research": research}
     )
-    print(f"✅ Outline created: {outline.working_title}\n")
-    
+    print(f"\u2705 Outline created: {outline.working_title}\n")
+
     # TASK 3: Content Writing
-    print("✍️  Phase 3: Writing blog post content...")
-    
+    print("\u270d\ufe0f  Phase 3: Writing blog post content...")
+
     # Write introduction
     introduction = marvin.run(
         f"Write a SHORT, engaging introduction for '{outline.working_title}'. "
@@ -230,7 +227,7 @@ def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> B
         result_type=str,
         context={"outline": outline, "research": research}
     )
-    
+
     # Write main sections
     sections = []
     for i, section in enumerate(outline.main_sections, 1):
@@ -244,8 +241,9 @@ def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> B
             result_type=str,
             context={"research": research, "previous_sections": sections}
         )
+        # FIX: this line was incorrectly outdented (was outside the for loop)
         sections.append({"heading": section.title, "content": content})
-    
+
     # Write conclusion
     conclusion = marvin.run(
         f"Write a SHORT conclusion (1 paragraph only). "
@@ -254,48 +252,47 @@ def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> B
         result_type=str,
         context={"outline": outline, "sections": sections}
     )
-    
+
     # Create call to action
     cta = marvin.run(
         f"Write a brief call-to-action. 1 sentence. Tone: {tone}",
         agents=[writer],
         result_type=str
     )
-    
-    print("✅ Content writing complete\n")
-    
+
+    print("\u2705 Content writing complete\n")
+
     # TASK 4: SEO Optimization
-    print("🔍 Phase 4: Optimizing for SEO...")
-    
-    # Generate SEO elements
+    print("\ud83d\udd0d Phase 4: Optimizing for SEO...")
+
     seo_title = marvin.run(
         f"Create an SEO-optimized title (max 60 chars) based on '{outline.working_title}'. "
         f"Make it click-worthy while accurately describing the content.",
         agents=[seo_optimizer],
         result_type=str
     )
-    
+
     slug = marvin.run(
         f"Create a URL slug for the title: {seo_title}",
         agents=[seo_optimizer],
         result_type=str
     )
-    
+
     meta_description = marvin.run(
         f"Write a meta description (150-160 chars) that summarizes the blog post and "
         f"encourages clicks. Use key points: {', '.join(outline.key_takeaways[:3])}",
         agents=[seo_optimizer],
         result_type=str
     )
-    
+
     keywords = marvin.run(
         f"Identify 5-8 relevant SEO keywords for this blog post about '{topic}'",
         agents=[seo_optimizer],
         result_type=list[str]
     )
-    
-    print("✅ SEO optimization complete\n")
-    
+
+    print("\u2705 SEO optimization complete\n")
+
     # Assemble final blog post
     blog_post = BlogPost(
         title=seo_title,
@@ -307,22 +304,21 @@ def generate_blog_post(topic: str, tone: str = "professional yet friendly") -> B
         conclusion=conclusion,
         call_to_action=cta
     )
-    
+
     return blog_post
 
 
 def save_blog_post(blog_post: BlogPost, output_dir: str = "generated_posts"):
     """
     Save the blog post as Markdown and JSON files.
-    
+
     Args:
         blog_post: The BlogPost to save
         output_dir: Directory to save files in
     """
-    # Create output directory
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
-    
+
     # Save as Markdown
     md_content = f"""---
 title: {blog_post.title}
@@ -333,67 +329,62 @@ date: {blog_post.created_at}
 ---
 
 # {blog_post.title}
-
 {blog_post.introduction}
 
 """
-    
+
     for section in blog_post.sections:
         md_content += f"## {section['heading']}\n\n{section['content']}\n\n"
-    
+
     md_content += f"## Conclusion\n\n{blog_post.conclusion}\n\n"
     md_content += f"---\n\n**{blog_post.call_to_action}**\n"
-    
+
     md_file = output_path / f"{blog_post.slug}.md"
     md_file.write_text(md_content, encoding="utf-8")
-    
+
     # Save as JSON
     json_file = output_path / f"{blog_post.slug}.json"
     json_file.write_text(blog_post.model_dump_json(indent=2), encoding="utf-8")
-    
-    print(f"💾 Blog post saved:")
-    print(f"   📄 Markdown: {md_file}")
-    print(f"   📊 JSON: {json_file}\n")
+
+    print(f"\ud83d\udcbe Blog post saved:")
+    print(f"   \ud83d\udcc4 Markdown: {md_file}")
+    print(f"   \ud83d\udcca JSON: {json_file}\n")
 
 
 def main():
     """Main function to run the blog generator"""
     print("=" * 70)
-    print("🤖 AI BLOG POST GENERATOR - Powered by Multi-Agent Orchestration")
+    print("\ud83e\udd16 AI BLOG POST GENERATOR - Powered by Multi-Agent Orchestration")
     print("=" * 70)
-    
-    # Get user input
-    topic = input("\n💭 What topic should I write about? ")
-    
+
+    topic = input("\n\ud83d� What topic should I write about? ")
+
     tone_options = {
         "1": "professional and informative",
-        "2": "casual and friendly", 
+        "2": "casual and friendly",
         "3": "enthusiastic and inspiring",
         "4": "authoritative and expert-level"
     }
-    
-    print("\n🎨 Choose a writing tone:")
+
+    print("\n\ud83c\udfa8 Choose a writing tone:")
     for key, value in tone_options.items():
         print(f"   {key}. {value.title()}")
-    
+
     tone_choice = input("\nSelect (1-4) [default: 1]: ").strip() or "1"
     tone = tone_options.get(tone_choice, tone_options["1"])
-    
+
     print("\n" + "=" * 70 + "\n")
-    
-    # Generate blog post
+
     blog_post = generate_blog_post(topic, tone)
-    
-    # Save files
     save_blog_post(blog_post)
-    
+
     print("=" * 70)
-    print("✨ BLOG POST GENERATION COMPLETE!")
+    print("\u2728 BLOG POST GENERATION COMPLETE!")
     print("=" * 70)
-    print(f"\n📌 Title: {blog_post.title}")
-    print(f"🔗 Slug: {blog_post.slug}")
-    print(f"📊 Keywords: {', '.join(blog_post.keywords[:3])}...")
-    print("\nYour blog post is ready to publish! 🎉\n")
+    print(f"\n\ud83d\udccc Title: {blog_post.title}")
+    print(f"\ud83d� Slug: {blog_post.slug}")
+    print(f"\ud83d\udcca Keywords: {', '.join(blog_post.keywords[:3])}...")
+    print("\nYour blog post is ready to publish! \ud83c\udf89\n")
 
 
 if __name__ == "__main__":

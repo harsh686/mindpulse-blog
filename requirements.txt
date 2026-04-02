@@ -1,7 +1,15 @@
-marvin
-python-dotenv
-google-generativeai
-groq
-flask
-markdown
-schedule
+# Core AI framework
+marvin>=2.0
+
+# LLM providers (choose at least one)
+google-generativeai>=0.8.0
+groq>=0.9.0
+openai>=1.0.0
+
+# Web server
+flask>=3.0.0
+markdown>=3.6
+
+# Utilities
+python-dotenv>=1.0.0
+schedule>=1.2.0

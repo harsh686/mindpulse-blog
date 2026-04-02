@@ -1,77 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ post.title }} - MindPulse</title>
-    <meta name="description" content="{{ post.description }}">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{{ post.title }}">
-    <meta property="og:description" content="{{ post.description }}">
-    <meta property="og:site_name" content="MindPulse">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ post.title }}">
-    <meta name="twitter:description" content="{{ post.description }}">
-    
-    <!-- Keywords -->
-    <meta name="keywords" content="{{ ', '.join(post.keywords) }}">
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ post.title }} — MindPulse</title>
+  <meta name="description" content="{{ post.description }}">
+  {% if post.keywords %}
+  <meta name="keywords" content="{{ post.keywords | join(', ') }}">
+  {% endif %}
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <nav class="post-nav">
-        <a href="/" class="back-button">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            <span>Back</span>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <a href="/" style="text-decoration:none;">
+          <div class="site-logo">Mind<span>Pulse</span></div>
         </a>
-    </nav>
+        <div class="site-tagline">Feel. Think. Grow.</div>
+      </div>
+    </div>
+  </header>
 
-    <article class="post-full">
-        <header class="post-header">
-            <h1 class="post-full-title">{{ post.title }}</h1>
-            <div class="post-full-meta">
-                <span class="post-full-date">{{ format_date(post.date) }}</span>
-            </div>
-        </header>
+  <main class="post-page">
+    <a href="/" class="back-link">&larr; All Reflections</a>
 
-        <div class="post-full-content">
-            {{ content|safe }}
-        </div>
+    <header class="post-header">
+      <div class="post-date">{{ format_date(post.date) }}</div>
+      <h1>{{ post.title }}</h1>
+      {% if post.description %}
+      <p class="description">{{ post.description }}</p>
+      {% endif %}
+    </header>
 
-        <footer class="post-full-footer">
-            <div class="social-share">
-                <p class="share-label">Share this reflection:</p>
-                <div class="share-buttons">
-                    <a href="https://twitter.com/intent/tweet?text={{ post.title | urlencode }}&url={{ request.url | urlencode }}" target="_blank" class="share-btn twitter">Twitter</a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}" target="_blank" class="share-btn facebook">Facebook</a>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}" target="_blank" class="share-btn linkedin">LinkedIn</a>
-                </div>
-            </div>
-            
-            <div class="tags">
-                {% for keyword in post.keywords[:5] %}
-                <span class="tag">#{{ keyword }}</span>
-                {% endfor %}
-            </div>
-            
-            <div class="share-section">
-                <p class="share-text">💭 Found this helpful? Get weekly reflections delivered to your inbox.</p>
-                <form class="newsletter-form" action="https://formspree.io/f/your-form-id" method="POST">
-                    <input type="email" name="email" placeholder="Enter your email" required>
-                    <button type="submit">Subscribe</button>
-                </form>
-                <a href="/" class="read-more-button">← Read More Reflections</a>
-            </div>
-        </footer>
+    <hr class="post-divider">
+
+    <article class="post-content">
+      {{ content | safe }}
     </article>
+
+    <div class="share-section">
+      <p>💭 Found this helpful? Share it with someone who needs it.</p>
+      <div class="share-links">
+        <a class="share-btn" href="https://twitter.com/intent/tweet?text={{ post.title | urlencode }}&url={{ request.url | urlencode }}" target="_blank" rel="noopener">𝕏 Twitter</a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.url | urlencode }}" target="_blank" rel="noopener">in LinkedIn</a>
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{ request.url | urlencode }}" target="_blank" rel="noopener">f Facebook</a>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 2rem;">
+      <a href="/" class="back-link">&larr; Read More Reflections</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 MindPulse &bull; Powered by AI &bull; <a href="/">Home</a></p>
+  </footer>
+
 </body>
 </html>

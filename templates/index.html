@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindPulse - Daily Reflections on Life</title>
-    <meta name="description" content="Thoughtful reflections on personal growth, mental wellness, and modern life challenges. New insights published daily.">
-    <meta property="og:title" content="MindPulse - Daily Reflections on Life">
-    <meta property="og:description" content="Thoughtful reflections on personal growth, mental wellness, and modern life challenges.">
-    <meta property="og:type" content="website">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindPulse — AI-Generated Reflections on Life</title>
+  <meta name="description" content="Thoughtful AI-generated reflections on personal growth, mental wellness, and modern life.">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="site-header">
-            <h1 class="site-title">💫 MindPulse</h1>
-            <p class="site-subtitle">Feel. Think. Grow.</p>
-            <p class="site-description">Daily reflections on personal growth, mental wellness, and navigating modern life</p>
-        </header>
 
-        <main class="posts-grid">
-            {% for post in posts %}
-            <article class="post-card">
-                <a href="/post/{{ post.slug }}" class="post-link">
-                    <div class="post-content">
-                        <h2 class="post-title">{{ post.title }}</h2>
-                        <p class="post-excerpt">{{ post.description }}</p>
-                        <div class="post-meta">
-                            <span class="post-date">{{ format_date(post.date) }}</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            {% endfor %}
-        </main>
-
-        <footer class="site-footer">
-            <div class="newsletter-signup">
-                <h3>Stay Connected</h3>
-                <p>Get weekly reflections delivered to your inbox</p>
-                <form class="newsletter-form" action="https://formspree.io/f/your-form-id" method="POST">
-                    <input type="email" name="email" placeholder="Enter your email" required>
-                    <button type="submit">Subscribe</button>
-                </form>
-            </div>
-            <p class="copyright">© 2025 MindPulse • New reflections published daily</p>
-        </footer>
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <div class="site-logo">Mind<span>Pulse</span></div>
+        <div class="site-tagline">Feel. Think. Grow.</div>
+      </div>
     </div>
+  </header>
+
+  <section class="hero">
+    <h1>Daily Reflections on<br>Life & Growth</h1>
+    <p>AI-powered insights on personal development, mental wellness, and navigating modern life.</p>
+  </section>
+
+  <main class="posts-container">
+    {% if posts %}
+      <div class="posts-grid">
+        {% for post in posts %}
+        <a href="/post/{{ post.slug }}" style="text-decoration:none;">
+          <article class="post-card">
+            <div class="post-date">{{ format_date(post.date) }}</div>
+            {% if post.keywords %}
+            <div class="tags">
+              {% for kw in post.keywords[:3] %}
+              <span class="tag">{{ kw }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <h2>{{ post.title }}</h2>
+            <p class="post-excerpt">{{ post.description }}</p>
+            <span class="read-more">Read reflection &rarr;</span>
+          </article>
+        </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="no-posts">
+        <div class="icon">✍️</div>
+        <h2>No posts yet</h2>
+        <p>Run <code>python blog_generator.py</code> to generate your first AI blog post.</p>
+      </div>
+    {% endif %}
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 MindPulse &bull; Powered by AI &bull; New reflections published daily</p>
+  </footer>
+
 </body>
 </html>

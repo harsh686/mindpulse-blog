@@ -8,11 +8,12 @@
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "web_showcase.py"
     }
-  ],
-  "env": {
-    "GOOGLE_API_KEY": "@google_api_key"
-  }
+  ]
 }
