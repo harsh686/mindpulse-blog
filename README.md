@@ -1,273 +1,142 @@
-# AI Blog Post Generator 🤖✍️
+# MindPulse Blog 🧠
 
-A powerful multi-agent AI system that generates high-quality blog posts using specialized AI agents for research, strategy, writing, and SEO optimization.
+> AI-powered blog that **researches, writes, and SEO-optimizes** posts automatically using a 4-agent pipeline.
 
-## � 100% FREE - No Paid APIs Required!
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/harsh686/mindpulse-blog)
 
-Uses **Google Gemini** or **Groq** - both have generous free tiers with no credit card required!
+---
 
-## �🌟 Features
+## How It Works
 
-- **Multi-Agent Orchestration**: Specialized AI agents work together like a real content team
-  - 🔍 **Research Specialist**: Gathers current information, statistics, and insights
-  - 📋 **Content Strategist**: Creates engaging outlines and narrative structures  
-  - ✍️ **Professional Writer**: Crafts clear, engaging content
-  - 🔍 **SEO Specialist**: Optimizes for search engines and discoverability
+When you run the generator, 4 specialized AI agents work in sequence:
 
-- **Structured Output**: Generate blog posts with proper structure:
-  - SEO-optimized titles and meta descriptions
-  - Well-organized sections with headings
-  - Engaging introduction and conclusion
-  - Call-to-action
-  - Keywords and metadata
-
-- **Multiple Formats**: Saves posts as both Markdown (.md) and JSON (.json)
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.10 or higher
-- A FREE API key from Google Gemini or Groq (no credit card needed!)
-
-### Automated Setup (Recommended - Windows)
-
-Just run this one command:
-```powershell
-.\setup.ps1
+```
+1. 🔍 Research Agent    → gathers key points, stats, trends on your topic
+2. 📋 Strategy Agent   → creates a concise 3-4 section outline (500-800 words)
+3. ✍️  Writer Agent     → writes intro, each section, conclusion, and CTA
+4. 📈 SEO Agent        → optimizes title, slug, meta description, keywords
 ```
 
-The wizard will:
-- ✅ Install all dependencies
-- ✅ Help you get a free API key
-- ✅ Configure everything
-- ✅ Run the generator
+Each post is saved as `.md` + `.json` in `generated_posts/`, then displayed by the Flask web server.
 
-### Manual Setup (Any OS)
+---
 
-1. **Install dependencies**:
+## Quick Start (GitHub Codespaces — No Local Install)
+
+**1.** Click **"Open in GitHub Codespaces"** above  
+**2.** Wait ~2 min for the environment to build  
+**3.** In the terminal:
+
 ```bash
-pip install marvin python-dotenv google-generativeai groq
+# Copy the config template
+cp .env.example .env
+
+# Open .env and add your API key (see below for where to get one)
+nano .env
 ```
 
-2. **Get a FREE API key** (choose one):
-   - **Google Gemini** (recommended): https://makersuite.google.com/app/apikey
-   - **Groq** (fast): https://console.groq.com/keys
-
-3. **Set your API key**:
-```bash
-# Windows PowerShell
-$env:GOOGLE_API_KEY="your-key-here"
-
-# Linux/Mac
-export GOOGLE_API_KEY="your-key-here"
-
-# Or create .env file
-echo "GOOGLE_API_KEY=your-key-here" > .env
-```
-
-4. **Run the generator**:
+**4.** Generate a blog post:
 ```bash
 python blog_generator.py
 ```
 
-👉 **Detailed setup:** See [FREE_SETUP.md](FREE_SETUP.md) for complete instructions
-
-## 📖 Usage
-
-1. Run the script:
-   ```bash
-   python blog_generator.py
-   ```
-
-2. Enter your blog topic when prompted:
-   ```
-   💭 What topic should I write about? The Future of AI in Healthcare
-   ```
-
-3. Choose a writing tone:
-   ```
-   🎨 Choose a writing tone:
-      1. Professional and Informative
-      2. Casual and Friendly
-      3. Enthusiastic and Inspiring
-      4. Authoritative and Expert-Level
-   ```
-
-4. Watch the magic happen! The system will:
-   - Research your topic
-   - Create an outline
-   - Write the full blog post
-   - Optimize for SEO
-
-5. Find your generated blog post in the `generated_posts/` directory
-
-## 📂 Output Structure
-
-Generated files are saved in `generated_posts/`:
-
+**5.** View the blog in your browser:
+```bash
+python web_showcase.py
+# → Codespaces auto-opens a preview at localhost:5000
 ```
-generated_posts/
-├── future-of-ai-in-healthcare.md    # Markdown format for publishing
-└── future-of-ai-in-healthcare.json  # Structured JSON data
-```
-
-### Markdown Format
-Perfect for publishing on platforms like:
-- Jekyll, Hugo, or other static site generators
-- WordPress (import as HTML)
-- Medium, Dev.to, Hashnode
-- Custom blog systems
-
-### JSON Format
-Contains structured data:
-```json
-{
-  "title": "The Future of AI in Healthcare: 5 Game-Changing Trends",
-  "slug": "future-of-ai-in-healthcare",
-  "meta_description": "Discover how AI is transforming healthcare...",
-  "keywords": ["AI healthcare", "medical AI", ...],
-  "sections": [...],
-  "word_count": 1523
-}
-```
-
-## 🎯 How It Works
-
-The system uses **multi-agent orchestration** - multiple specialized AI agents working together in a coordinated workflow:
-
-```
-1. Research Agent
-   └─> Gathers information, statistics, trending topics
-       ↓
-2. Strategy Agent  
-   └─> Creates compelling outline and structure
-       ↓
-3. Writing Agent
-   └─> Writes introduction, sections, conclusion
-       ↓
-4. SEO Agent
-   └─> Optimizes title, meta description, keywords
-       ↓
-5. Final Blog Post ✨
-```
-
-All agents share context through a **Thread**, ensuring consistency and coherence.
-
-## 🛠️ Customization
-
-### Change the LLM Provider
-
-Marvin supports multiple providers:
-
-```python
-from pydantic_ai.models.anthropic import AnthropicModel
-
-# Use Claude instead of OpenAI
-writer = marvin.Agent(
-    name="Writer",
-    model=AnthropicModel("claude-3-5-sonnet-latest"),
-    instructions="..."
-)
-```
-
-### Adjust Agent Instructions
-
-Modify agent personalities in the code:
-
-```python
-writer = marvin.Agent(
-    name="Professional Writer",
-    instructions="""You are a skilled blog writer who:
-    - Your custom instructions here
-    - Add more guidelines
-    - Modify the style
-    """
-)
-```
-
-### Change Output Length
-
-Adjust section writing prompts:
-
-```python
-# For longer content
-content = marvin.run(
-    f"Write 5-7 well-developed paragraphs...",  # Changed from 3-4
-    ...
-)
-```
-
-## 📋 Example Output
-
-Here's what a generated blog post looks like:
-
-```markdown
----
-title: 10 AI Trends That Will Shape 2025: A Complete Guide
-slug: ai-trends-2025-complete-guide  
-description: Explore the top 10 AI trends transforming industries in 2025...
-keywords: AI trends, artificial intelligence 2025, machine learning...
----
-
-# 10 AI Trends That Will Shape 2025: A Complete Guide
-
-Artificial intelligence isn't just changing technology—it's reshaping how we live, 
-work, and interact with the world around us...
-
-## 1. Multimodal AI Models Go Mainstream
-
-Content here...
-
-## Conclusion
-
-The AI landscape in 2025 promises unprecedented innovation...
 
 ---
 
-**Ready to stay ahead of AI trends? Subscribe to our newsletter...**
+## API Key Setup
+
+You need **one** of these (all have free tiers):
+
+| Provider | Where to get key | Speed | Quality |
+|----------|-----------------|-------|----------|
+| **NVIDIA Build** ⭐ | [build.nvidia.com](https://build.nvidia.com) → any model → "Get API Key" | Fast | Excellent (Llama 4 Maverick) |
+| **Google Gemini** | [aistudio.google.com](https://aistudio.google.com/app/apikey) | Fast | Excellent |
+| **Groq** | [console.groq.com/keys](https://console.groq.com/keys) | Very fast | Good |
+| **OpenAI** | [platform.openai.com](https://platform.openai.com) | Fast | Excellent (paid) |
+
+Add your key to `.env`:
+
+```bash
+# For NVIDIA (recommended — free)
+NVIDIA_API_KEY=nvapi-your-key-here
+
+# Or for Google Gemini
+# GOOGLE_API_KEY=your-key-here
+
+# Or for Groq
+# GROQ_API_KEY=your-key-here
 ```
 
-## 🤖 Powered By
-
-- **[Marvin](https://github.com/prefecthq/marvin)** - Multi-agent orchestration framework (successor to ControlFlow)
-- **[Pydantic AI](https://ai.pydantic.dev/)** - Type-safe AI framework
-- **[Google Gemini](https://ai.google.dev/)** - Free, powerful LLM (default)
-- **[Groq](https://groq.com/)** - Lightning-fast free alternative
-
-## 🎓 Why Multi-Agent Orchestration?
-
-Traditional single-prompt blog generation often produces:
-- Generic, surface-level content
-- Inconsistent quality
-- Poor structure
-- Weak SEO
-
-Our multi-agent approach:
-- ✅ Specializes each step with expert agents
-- ✅ Maintains context across the entire workflow
-- ✅ Produces structured, consistent output
-- ✅ Balances creativity with optimization
-
-## 🔮 Future Enhancements
-
-Possible improvements:
-- [ ] Web scraping for real-time research
-- [ ] Image generation for blog post visuals
-- [ ] Competitor analysis integration
-- [ ] Multi-language support
-- [ ] Content calendar planning
-- [ ] Social media post generation
-- [ ] Interactive CLI with rich formatting
-
-## 📝 License
-
-MIT License - Feel free to use and modify!
-
-## 🙏 Credits
-
-Built with ❤️ using Marvin, the spiritual successor to ControlFlow.
+> ⚠️ Never commit your `.env` file — it's already in `.gitignore`.
 
 ---
 
-**Ready to generate amazing blog posts? Get started now!** 🚀
+## Local Setup
+
+```bash
+git clone https://github.com/harsh686/mindpulse-blog.git
+cd mindpulse-blog
+
+pip install -r requirements.txt
+
+cp .env.example .env
+# Edit .env and add your API key
+
+python blog_generator.py   # generate a post
+python web_showcase.py     # view at http://localhost:5000
+```
+
+---
+
+## Project Structure
+
+```
+mindpulse-blog/
+├── blog_generator.py     # Core: 4-agent AI pipeline
+├── web_showcase.py       # Flask web server (blog UI)
+├── auto_scheduler.py     # Auto-generate posts on a schedule
+├── trend_monitor.py      # Monitor trending topics
+│
+├── templates/            # HTML templates (Jinja2)
+│   ├── index.html        # Blog homepage (post grid)
+│   └── post.html         # Individual post page
+│
+├── static/
+│   └── style.css         # Dark-mode blog stylesheet
+│
+├── generated_posts/      # Your AI-written blog posts (.md + .json)
+├── api/index.py          # WSGI entry point
+│
+├── .devcontainer/        # GitHub Codespaces config
+├── .env.example          # API key template
+├── requirements.txt      # Python dependencies
+└── .gitignore
+```
+
+---
+
+## Auto-Publishing (Optional)
+
+To auto-generate posts on a schedule using GitHub Actions, add your API key as a repository secret:
+
+```
+Settings → Secrets and variables → Actions → New repository secret
+Name: NVIDIA_API_KEY
+Value: nvapi-your-key-here
+```
+
+The `.github/workflows/daily-blog.yml` workflow will then run automatically.
+
+---
+
+## Tech Stack
+
+- **[Marvin](https://www.askmarvin.ai/)** — Multi-agent AI orchestration
+- **Flask** — Web server
+- **Pydantic** — Structured data models for AI output
+- **python-dotenv** — Environment config

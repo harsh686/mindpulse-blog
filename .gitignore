@@ -1,4 +1,4 @@
-# Ignore environment files
+# Environment — never commit this
 .env
 
 # Python cache
@@ -6,12 +6,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
 
 # Virtual environments
 venv/
 env/
 ENV/
+.venv/
 
 # IDE
 .vscode/
@@ -25,3 +25,11 @@ Thumbs.db
 
 # Marvin cache
 .marvin/
+
+# Auto-generated trend data
+trend_logs/
+
+# Pip
+*.egg-info/
+dist/
+build/
